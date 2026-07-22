@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>US-FLIX | Intro</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- THE ARCADE MUSIC PLAYER -->
+    <div id="music-player">
+      <button id="music-btn">▶</button>
+      <div class="cassette-reels">
+        <div class="c-reel"></div>
+        <div class="c-reel"></div>
+      </div>
+      <div class="music-labels">
+        <span class="music-track">US.EXE OST</span>
+        <span class="music-sub">now playing</span>
+      </div>
+    </div>
+    <div id="page-transition"></div>
+
+    <div id="app-content">
+      <div class="netflix-wrap">
+        <!-- Screen 1: Who is watching? -->
+        <div id="profile-select" style="text-align: center">
+          <h1 class="n-logo">IT'S OUR DAY</h1>
+          <h2 class="profile-title">Who's watching?</h2>
+          <div class="profiles">
+            <div class="profile" id="profile-abel">
+              <div class="p-avatar"><img src="asset/1.jpg" alt="Abel" /></div>
+              <span class="p-name">Love Of My Life</span>
+            </div>
+            <div class="profile">
+              <div class="p-avatar">
+                <div style="background: #333; width: 100%; height: 100%"></div>
+              </div>
+              <span class="p-name">Guest</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 2: Trailer Sequence -->
+        <div id="cinema-trailer" class="cinematic-trailer">
+          <h1 class="n-logo" style="margin-bottom: 80px">MY HEART PRESENT</h1>
+          <p class="cine-text">In a world full of billions of people...</p>
+          <p class="cine-text">Two paths somehow collided.</p>
+          <p class="cine-text">And started the best season ever.</p>
+          <p class="cine-text">This is our story, sayang.</p>
+
+          <div id="cinema-skip" class="skip-trailer">
+            <a href="us.html" class="px-btn rose" data-nav>START GAME ▶</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

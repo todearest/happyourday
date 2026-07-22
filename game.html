@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stage 2 | Fishing</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- THE ARCADE MUSIC PLAYER -->
+    <div id="music-player">
+      <button id="music-btn">▶</button>
+      <div class="cassette-reels">
+        <div class="c-reel"></div>
+        <div class="c-reel"></div>
+      </div>
+      <div class="music-labels">
+        <span class="music-track">US.EXE OST</span>
+        <span class="music-sub">now playing</span>
+      </div>
+    </div>
+
+    <div id="page-transition"></div>
+
+    <div id="app-content">
+      <a href="menu.html" class="back-nav" data-nav style="z-index: 100"
+        >◀ MENU</a
+      >
+
+      <div class="fishing-wrap">
+        <div class="f-sky">
+          <div class="f-sun"></div>
+          <div class="f-pier"></div>
+          <div class="f-character">
+            <div class="fc-head"></div>
+            <div class="fc-body"></div>
+          </div>
+          <div class="rod-wrap">
+            <div class="rod-stick"></div>
+            <div class="rod-line" id="rod-line">
+              <div class="rod-hook"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="f-water" id="f-water">
+          <div class="px-fish">🐟</div>
+          <div class="px-fish">🐠</div>
+          <div class="px-fish">🦈</div>
+          <div class="px-fish">🐡</div>
+          <div class="px-fish">🎣</div>
+        </div>
+
+        <div class="fishing-bottom">
+          <div class="fish-pips">
+            <span class="f-pip">🐟</span><span class="f-pip">🐠</span
+            ><span class="f-pip">🦈</span><span class="f-pip">🐡</span
+            ><span class="f-pip">🎣</span>
+          </div>
+          <button id="cast-btn" class="px-btn">🎣 CAST ROD</button>
+          <span class="px-small">catch all 5 notes to clear the stage</span>
+        </div>
+
+        <!-- Solid Overlays Outside Flow -->
+        <div class="catch-overlay" id="catch-overlay">
+          <div class="catch-modal">
+            <span class="catch-icon" id="catch-icon">🐟</span>
+            <h3 class="catch-title" id="catch-title">TITLE</h3>
+            <p class="catch-msg" id="catch-msg">Message here...</p>
+            <button
+              class="px-btn rose"
+              id="catch-close"
+              style="margin-top: 20px"
+            >
+              KEEP IT
+            </button>
+          </div>
+        </div>
+
+        <div class="win-overlay" id="win-screen">
+          <div class="win-hearts">✨</div>
+          <h2 class="win-txt">STAGE CLEAR!<br />YOU CAUGHT ALL MY FEELINGS.</h2>
+          <a href="reasons.html" class="px-btn rose" data-nav
+            >PROCEED TO LEVEL 3 ▶</a
+          >
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Final Stage</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- THE ARCADE MUSIC PLAYER -->
+    <div id="music-player">
+      <button id="music-btn">▶</button>
+      <div class="cassette-reels">
+        <div class="c-reel"></div>
+        <div class="c-reel"></div>
+      </div>
+      <div class="music-labels">
+        <span class="music-track">US.EXE OST</span>
+        <span class="music-sub">now playing</span>
+      </div>
+    </div>
+    <div id="page-transition"></div>
+    <div id="music-player">
+      <button id="music-btn">▶</button>
+      <div class="cassette-reels">
+        <div class="c-reel"></div>
+        <div class="c-reel"></div>
+      </div>
+      <div class="music-labels">
+        <span class="music-track">US.EXE OST</span
+        ><span class="music-sub">now playing</span>
+      </div>
+    </div>
+
+    <div id="app-content">
+      <a href="menu.html" class="back-nav" data-nav>◀ MENU</a>
+
+      <div
+        class="page-shell"
+        style="
+          padding-top: 120px;
+          min-height: 90vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        "
+      >
+        <!-- THE RPG CUTSCENE DIALOGUE -->
+        <div id="cutscene-container" class="cutscene-container reveal">
+          <!-- THE UPGRADE: A self-contained Terminal Window -->
+          <div class="rpg-dialogue-box" id="rpg-box">
+            <!-- Terminal Header -->
+            <div class="rpg-header">
+              <div class="speaker-name">SYSTEM.MSG</div>
+              <div class="system-status">
+                <span>STATUS: ONLINE</span>
+                <img
+                  src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXJlMXY1aW9kOHVvNmU2Nmx2ajh2cjFjZzVwMG45M2cya2VmNG00cSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GJACwlJbtiWrYeWoqM/giphy.gif"
+                  class="ui-heart-icon"
+                  alt="status"
+                />
+              </div>
+            </div>
+
+            <!-- Terminal Screen (Text Area) -->
+            <div class="rpg-content">
+              <p id="dialogue-text"></p>
+              <span id="dialogue-indicator" class="blink-arrow">▼</span>
+            </div>
+          </div>
+
+          <p class="px-small tap-hint">TAP THE BOX TO CONTINUE</p>
+        </div>
+
+        <div
+          id="finale"
+          class="level-complete-action"
+          style="
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            gap: 15px;
+          "
+        >
+          <img src="asset/5.jpg" class="gg-badge" alt="good game" />
+
+          <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3N1bG5qaTZxZmNzc3h5aWlpd3JtNGNyOXE3aHN1eWZqZnBxc3F1MyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/RtpmUzMbynBeCgEa5E/giphy.gif"
+            class="gif-center"
+            alt="bears"
+          />
+
+          <h1
+            class="px-title"
+            style="color: var(--accent-gold); margin-top: 10px"
+          >
+            STAGE CLEAR
+          </h1>
+
+          <div class="hold-btn" id="hold-btn" style="margin-top: 10px">
+            <span style="z-index: 2">♡</span>
+            <div class="ring-fill" id="ring-fill"></div>
+          </div>
+          <span id="hold-hint" class="px-small">HOLD TO COLLECT REWARD</span>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

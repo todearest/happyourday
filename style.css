@@ -1,0 +1,1187 @@
+/* ============================================================
+   US.EXE — Midnight Arcade Edition (Dark Mode)
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@500;700&display=swap");
+
+:root {
+  --bg-dark: #0d0d14;
+  --bg-panel: #1a1a24;
+  --pixel-black: #000000;
+  --accent-rose: #ff3366;
+  --accent-cyan: #00e5ff;
+  --accent-gold: #ffd166;
+  --text-main: #f0f0f5;
+  --text-muted: #9ca3af;
+
+  --f-pixel: "Press Start 2P", monospace;
+  --f-body: "Quicksand", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: var(--f-body);
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+
+/* ── Page Transition & Music ── */
+#page-transition {
+  position: fixed;
+  inset: 0;
+  background: var(--pixel-black);
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s steps(4);
+}
+#page-transition.active {
+  opacity: 1;
+  pointer-events: all;
+}
+#music-player {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-panel);
+  border: 3px solid var(--accent-cyan);
+  box-shadow: 4px 4px 0 var(--pixel-black);
+  padding: 8px 14px 8px 8px;
+}
+#music-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--accent-rose);
+  border: none;
+  color: var(--pixel-black);
+  font-family: var(--f-pixel);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s;
+}
+#music-btn:active {
+  transform: scale(0.9);
+}
+.cassette-reels {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.c-reel {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-cyan);
+  background: var(--bg-dark);
+  position: relative;
+}
+.c-reel::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--accent-rose);
+}
+.music-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.music-track {
+  font-family: var(--f-pixel);
+  font-size: 8px;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+.music-sub {
+  font-family: var(--f-pixel);
+  font-size: 6px;
+  color: var(--accent-cyan);
+  white-space: nowrap;
+}
+@keyframes reelSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+#music-player.playing .c-reel {
+  animation: reelSpin 0.6s linear infinite;
+}
+
+/* ── Utilities ── */
+.back-nav {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 900;
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  color: var(--text-main);
+  text-decoration: none;
+  background: var(--bg-panel);
+  border: 2px solid var(--accent-cyan);
+  box-shadow: 3px 3px 0 var(--pixel-black);
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.1s;
+}
+.back-nav:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.rd1 {
+  transition-delay: 0.1s;
+}
+
+.px-title {
+  font-family: var(--f-pixel);
+  font-size: clamp(16px, 4vw, 24px);
+  line-height: 1.8;
+  letter-spacing: 1px;
+  color: var(--accent-cyan);
+  text-shadow: 2px 2px 0 var(--pixel-black);
+}
+.px-small {
+  font-family: var(--f-pixel);
+  font-size: clamp(10px, 2vw, 12px);
+  line-height: 2;
+  color: var(--text-muted);
+}
+.px-btn {
+  font-family: var(--f-pixel);
+  font-size: clamp(10px, 2vw, 12px);
+  background: var(--bg-panel);
+  color: var(--accent-gold);
+  border: 3px solid var(--accent-gold);
+  box-shadow: 5px 5px 0 var(--pixel-black);
+  padding: 16px 24px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.1s;
+  text-decoration: none;
+  text-align: center;
+}
+.px-btn:active {
+  transform: translate(5px, 5px);
+  box-shadow: none;
+}
+.px-btn.rose {
+  background: var(--accent-rose);
+  color: var(--pixel-black);
+  border-color: var(--pixel-black);
+  box-shadow: 5px 5px 0 var(--pixel-black);
+}
+
+.page-shell {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 100px 24px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+.level-complete-action {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+.level-complete-action.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── 1. Netflix Cinematic Vibe (index.html) ── */
+.netflix-wrap {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #050505;
+  padding: 20px;
+}
+.n-logo {
+  font-family: var(--f-pixel);
+  font-size: 32px;
+  color: #e50914;
+  letter-spacing: 4px;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 0 #000;
+  text-align: center;
+}
+.profile-title {
+  font-family: var(--f-body);
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 30px;
+}
+.profiles {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.profile:hover {
+  transform: scale(1.05);
+}
+.p-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  background: #333;
+  border: 3px solid transparent;
+  overflow: hidden;
+}
+.profile:hover .p-avatar {
+  border-color: #fff;
+}
+.p-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.p-name {
+  font-family: var(--f-body);
+  font-size: 16px;
+  color: #808080;
+}
+.profile:hover .p-name {
+  color: #fff;
+}
+
+.cinematic-trailer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 50;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+}
+.cine-text {
+  font-family: var(--f-body);
+  font-size: clamp(20px, 5vw, 32px);
+  color: #fff;
+  font-weight: 700;
+  opacity: 0;
+  position: absolute;
+  transition: opacity 1.5s ease;
+  max-width: 800px;
+  line-height: 1.5;
+  margin-top: 120px;
+}
+.cine-text.show {
+  opacity: 1;
+}
+.skip-trailer {
+  position: absolute;
+  bottom: 40px;
+  opacity: 0;
+  transition: opacity 1s;
+  z-index: 60;
+}
+
+/* ── 2. Arcade Menu (menu.html) ── */
+.title-screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  padding: 80px 24px;
+  text-align: center;
+}
+.game-cartridge {
+  background: var(--bg-panel);
+  padding: 24px 32px;
+  border: 4px solid var(--accent-cyan);
+  box-shadow: 8px 8px 0 var(--pixel-black);
+}
+.cart-title {
+  font-family: var(--f-pixel);
+  font-size: clamp(24px, 6vw, 42px);
+  color: var(--accent-rose);
+  letter-spacing: 2px;
+  display: block;
+  text-shadow: 3px 3px 0 var(--pixel-black);
+}
+.cart-sub {
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  color: var(--text-main);
+  margin-top: 14px;
+  display: block;
+}
+.stage-list {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+.stage-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  background: var(--bg-panel);
+  border: 3px solid var(--accent-cyan);
+  box-shadow: 4px 4px 0 var(--pixel-black);
+  text-decoration: none;
+  color: var(--text-main);
+  transition: transform 0.1s;
+  text-align: left;
+}
+.stage-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+.s-num {
+  font-family: var(--f-pixel);
+  font-size: 14px;
+  color: var(--accent-gold);
+}
+.s-text h3 {
+  font-family: var(--f-pixel);
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: var(--accent-rose);
+}
+.s-text p {
+  font-family: var(--f-body);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ── 3. Cards (us.html) - Premium Midnight Arcade UI ── */
+/* ── 3. Cards (us.html) - SCRAPY ARCADE MODE ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px;
+  width: 100%;
+  padding-top: 20px;
+}
+
+/* Scrapy Scattered Effect */
+.card-wrap {
+  position: relative;
+  perspective: 1000px;
+  /* Uses a custom variable defined in HTML to tilt each card differently */
+  transform: rotate(var(--rot, 0deg));
+  transition:
+    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    z-index 0s;
+  z-index: 1;
+}
+/* Hover: Straightens out, pops up, glows */
+.card-wrap:hover {
+  transform: rotate(0deg) scale(1.05) translateY(-10px);
+  z-index: 10;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  padding-top: 140%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+/* Chunky Arcade Monitor Frame */
+.card-front,
+.card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-panel);
+  box-shadow:
+    12px 12px 0px rgba(0, 0, 0, 0.9),
+    inset 0 0 0 2px #444;
+  border: 6px solid #111;
+}
+
+/* Fat bottom bezel like an arcade machine */
+.card-front {
+  border-bottom-width: 45px;
+  border-top-width: 20px;
+  background: #000;
+}
+
+/* CRT Effect over the Photos */
+.card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  filter: contrast(1.2) grayscale(0.2);
+  transition: all 0.4s;
+}
+.card-wrap:hover .card-front img {
+  opacity: 1;
+  filter: contrast(1) grayscale(0);
+}
+
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
+  background-size:
+    100% 4px,
+    3px 100%;
+  z-index: 2;
+}
+
+/* Decorative Arcade Screws */
+.arcade-screws {
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  z-index: 5;
+}
+.arcade-screws::before,
+.arcade-screws::after {
+  content: "+";
+  position: absolute;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #444;
+}
+.arcade-screws::before {
+  top: -18px;
+  left: 4px;
+}
+.arcade-screws::after {
+  top: -18px;
+  right: 4px;
+}
+
+/* Blinking Insert Coin Text */
+.card-tap-arcade {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-pixel);
+  font-size: 8px;
+  color: var(--accent-rose);
+  white-space: nowrap;
+  animation: blink 1s step-end infinite;
+  text-shadow: 0 0 8px var(--accent-rose);
+}
+
+/* --- BACK OF CARD: Industrial Cyberpunk --- */
+.card-back {
+  transform: rotateY(180deg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  background: #111;
+  border: 4px solid var(--accent-cyan);
+  /* Blueprint/Grid Texture */
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(0, 229, 255, 0.04) 10px,
+    rgba(0, 229, 255, 0.04) 20px
+  );
+}
+
+/* Hazard Tape Element */
+.hazard-tape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--accent-gold) 0,
+    var(--accent-gold) 12px,
+    #000 12px,
+    #000 24px
+  );
+  border-bottom: 2px solid #000;
+}
+
+.card-deco-top {
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  color: var(--accent-cyan);
+  letter-spacing: 2px;
+  width: 100%;
+  border-bottom: 2px dashed rgba(0, 229, 255, 0.4);
+  padding-bottom: 12px;
+  margin-top: 16px;
+  text-shadow: 2px 2px 0 var(--pixel-black);
+}
+
+.card-back-msg {
+  font-family: var(--f-body);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--text-main);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  margin: auto 0;
+  padding: 10px 0;
+  z-index: 2;
+}
+
+.card-deco-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  z-index: 2;
+}
+.card-deco-bottom span:first-child {
+  color: var(--accent-rose);
+  font-size: 24px;
+  animation: pulse 1s infinite alternate;
+  text-shadow: 0 0 10px var(--accent-rose);
+}
+.card-tap.back-tap {
+  position: static;
+  transform: none;
+  background: #000;
+  color: var(--accent-cyan);
+  border: 2px solid var(--accent-cyan);
+  font-size: 8px;
+  padding: 8px 14px;
+  box-shadow: 3px 3px 0 #000;
+}
+
+/* ── 4. Fishing Game FIX (game.html) ── */
+.fishing-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+.f-sky {
+  flex: 1;
+  background: linear-gradient(180deg, #1a1a2e 0%, #2d1b2e 100%);
+  position: relative;
+}
+.f-sun {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--accent-gold);
+  border: 3px solid #000;
+  box-shadow: 0 0 20px var(--accent-gold);
+  border-radius: 50%;
+}
+.f-water {
+  flex: 1.2;
+  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  position: relative;
+}
+/* --- RESTORED PIER & NEON FISHING ROD --- */
+.f-pier {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(80px, 20vw, 120px);
+  height: 40px;
+  background: #2a1e1e;
+  border: 3px solid var(--pixel-black);
+  border-bottom: none;
+  box-shadow: inset 0 4px 0 rgba(255, 255, 255, 0.05);
+}
+.f-character {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-60%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+.fc-head {
+  width: 18px;
+  height: 16px;
+  background: var(--accent-gold);
+  border: 2px solid var(--pixel-black);
+}
+.fc-body {
+  width: 16px;
+  height: 18px;
+  background: var(--accent-rose);
+  border: 2px solid var(--pixel-black);
+  border-top: none;
+}
+
+.rod-wrap {
+  position: absolute;
+  bottom: 50px;
+  left: calc(50% + 12px);
+  transform-origin: bottom left;
+  transition: transform 0.5s ease;
+  z-index: 2;
+}
+.rod-stick {
+  width: 4px;
+  height: 55px;
+  background: var(--pixel-black);
+}
+
+/* Tali dan Kail Pancing Neon */
+.rod-line {
+  position: absolute;
+  top: 100%;
+  left: 1px;
+  width: 2px;
+  background: var(--accent-cyan);
+  height: 0;
+  transform-origin: top center;
+  transition: height 0.7s ease;
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+.rod-hook {
+  position: absolute;
+  bottom: 0;
+  left: -4px;
+  width: 10px;
+  height: 9px;
+  border: 2px solid var(--accent-cyan);
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+.fishing-bottom {
+  padding: 30px 20px 85px 20px;
+  background: var(--bg-panel);
+  border-top: 4px solid var(--accent-cyan);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  z-index: 10;
+}
+.fish-pips {
+  display: flex;
+  gap: 15px;
+  font-size: 24px;
+  opacity: 0.4;
+}
+.f-pip.got {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px var(--accent-gold));
+}
+.px-fish {
+  font-size: 45px;
+  position: absolute;
+  cursor: pointer;
+  display: none;
+  filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5));
+  z-index: 5;
+}
+.px-fish.show {
+  display: block;
+  animation: floatFish 3s ease-in-out infinite;
+}
+@keyframes floatFish {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Fishing Modals (Fixed Overlay Bug) */
+.catch-overlay,
+.win-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(13, 13, 20, 0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.catch-overlay.show,
+.win-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.catch-modal {
+  background: var(--bg-panel);
+  border: 4px solid var(--accent-cyan);
+  box-shadow: 8px 8px 0 var(--pixel-black);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.catch-overlay.show .catch-modal {
+  transform: scale(1);
+}
+.catch-icon {
+  font-size: 60px;
+  display: block;
+  margin-bottom: 15px;
+}
+.catch-title {
+  font-family: var(--f-pixel);
+  font-size: 14px;
+  color: var(--accent-gold);
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+.catch-msg {
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+.win-hearts {
+  font-size: 50px;
+  margin-bottom: 20px;
+  animation: pulse 1s infinite alternate;
+}
+.win-txt {
+  font-family: var(--f-pixel);
+  font-size: 20px;
+  color: var(--accent-rose);
+  line-height: 1.8;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 0 var(--pixel-black);
+}
+@keyframes pulse {
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* ── 5. Reason Slots (reasons.html) - DYNAMIC MONITOR FIX ── */
+.slot-machine {
+  width: 100%;
+  background: var(--bg-panel);
+  border: 4px solid var(--accent-cyan);
+  box-shadow: 8px 8px 0 var(--pixel-black);
+}
+
+.slot-screen {
+  background: #050505;
+  margin: 16px;
+  border: 3px solid #333;
+
+  /* 👇 THE UPGRADE: Menghapus fixed height agar frame bisa fleksibel menyesuaikan foto */
+  min-height: 150px; /* Menjaga agar layar tidak kempes saat foto belum loading */
+
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9);
+}
+
+.slot-screen img {
+  width: 100%;
+
+  /* 👇 THE UPGRADE: Menggunakan height: auto agar foto mengatur tinggi frame secara otomatis */
+  height: auto;
+  display: block; /* Menghilangkan glitch celah putih kecil di bawah foto */
+
+  opacity: 0.15;
+  filter: grayscale(100%) brightness(0.5);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Screen nyala saat lever selesai ditarik */
+.slot-screen.revealed img {
+  opacity: 1;
+  filter: grayscale(0%) brightness(1);
+}
+
+.slot-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan);
+  font-family: var(--f-pixel);
+  font-size: 10px;
+}
+.slot-reels-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #0a0a0a;
+  margin: 0 16px;
+  border: 2px solid #222;
+}
+.reel-win {
+  flex: 1;
+  height: 40px;
+  background: #111;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.slot-lever-row {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.lever-ball {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent-rose);
+  border: 4px solid #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  box-shadow: 0 4px 0 #80132b;
+  transition: transform 0.2s;
+}
+.lever-ball:active {
+  transform: translateY(10px);
+  box-shadow: 0 0 0 #80132b;
+}
+.reason-card {
+  width: 100%;
+  background: var(--bg-panel);
+  border: 4px solid var(--accent-rose);
+  box-shadow: 8px 8px 0 var(--pixel-black);
+  padding: 24px;
+  min-height: 150px;
+  opacity: 0;
+  transition: opacity 0.5s;
+  margin-top: 20px;
+}
+.reason-card.show {
+  opacity: 1;
+}
+.reason-tag {
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  color: var(--accent-gold);
+  display: block;
+  margin-bottom: 12px;
+}
+.reason-heading {
+  font-family: var(--f-body);
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--accent-cyan);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.reason-body {
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+/* ── 6. Final Stage (letter.html) - RPG CUTSCENE UI ── */
+.cutscene-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 1. The Main Terminal Container */
+.rpg-dialogue-box {
+  width: 100%;
+  background: rgba(13, 13, 20, 0.95);
+  border: 4px solid var(--accent-cyan);
+  box-shadow:
+    0 0 20px rgba(0, 229, 255, 0.2),
+    inset 0 0 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden; /* Keeps the header neatly inside the box */
+  transition: transform 0.1s;
+}
+.rpg-dialogue-box:active {
+  transform: scale(0.98);
+}
+
+/* 2. The Built-in HUD Header */
+.rpg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #000;
+  border-bottom: 2px dashed rgba(0, 229, 255, 0.5);
+  padding: 10px 16px;
+}
+
+.speaker-name {
+  background: var(--accent-rose);
+  color: #000;
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 2px;
+}
+
+.system-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-pixel);
+  font-size: 8px;
+  color: var(--accent-gold);
+}
+
+/* Heart GIF integrated perfectly as a tiny status icon */
+.ui-heart-icon {
+  width: 20px;
+  filter: drop-shadow(0 0 5px rgba(255, 51, 102, 0.6));
+}
+
+/* 3. The Text Area */
+.rpg-content {
+  padding: 30px 24px 45px 24px;
+  position: relative;
+  min-height: 160px;
+}
+
+#dialogue-text {
+  font-family: var(--f-body);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--text-main);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.blink-arrow {
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  color: var(--accent-gold);
+  font-family: var(--f-pixel);
+  font-size: 14px;
+  animation: blinkArrow 1s step-end infinite;
+  display: none;
+}
+@keyframes blinkArrow {
+  50% {
+    opacity: 0;
+  }
+}
+
+.tap-hint {
+  text-align: center;
+  margin-top: 25px;
+}
+
+/* ── FINALE REWARD SCREEN ── */
+.gg-badge {
+  width: 90px;
+  border-radius: 6px;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+  transform: rotate(-5deg);
+  margin-bottom: 5px;
+}
+
+.gif-center {
+  position: relative;
+  width: 120px;
+  display: block;
+  border-radius: 12px;
+  border: 4px solid var(--accent-cyan);
+  box-shadow: 6px 6px 0 var(--pixel-black);
+}
+
+.hold-btn {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--bg-panel);
+  border: 4px solid var(--accent-cyan);
+  color: var(--accent-rose);
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  user-select: none;
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+}
+.ring-fill {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(var(--accent-rose) 0%, transparent 0%);
+  opacity: 0.3;
+}
+
+@media (max-width: 480px) {
+  /* Scale down the music player so it doesn't dominate the screen */
+  #music-player {
+    transform: scale(0.85);
+    transform-origin: bottom right;
+    bottom: 12px;
+    right: 12px;
+  }
+
+  /* Slightly reduce the gap in the fishing UI for smaller screens */
+  .fishing-bottom {
+    padding-top: 20px;
+    gap: 10px;
+  }
+}
+
+/* ── UNIVERSAL NEXT LEVEL BUTTON (TIGHTER UI/UX) ── */
+.universal-next-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* THE FIX: Reduced from 40px to 20px to pull it close to the content */
+  margin-top: 20px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 50;
+}
+
+.universal-next-btn {
+  background: transparent;
+  color: var(--accent-cyan);
+  border: 2px solid var(--accent-cyan);
+  font-family: var(--f-pixel);
+  font-size: 10px;
+  padding: 16px 32px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 4px;
+  box-shadow:
+    0 0 12px rgba(0, 229, 255, 0.2),
+    inset 0 0 8px rgba(0, 229, 255, 0.1);
+  transition: all 0.2s ease;
+  text-shadow: 0 0 5px var(--accent-cyan);
+  letter-spacing: 1px;
+}
+
+.universal-next-btn:active {
+  background: var(--accent-cyan);
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
+  transform: translateY(3px);
+  text-shadow: none;
+}
+
+.universal-next-btn .arr {
+  animation: slideArrow 0.8s infinite alternate ease-in-out;
+  color: var(--accent-rose);
+  text-shadow: 0 0 5px var(--accent-rose);
+}
+
+@keyframes slideArrow {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(6px);
+  }
+}

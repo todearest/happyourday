@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stage 3 | Reasons</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- THE ARCADE MUSIC PLAYER -->
+    <div id="music-player">
+      <button id="music-btn">▶</button>
+      <div class="cassette-reels">
+        <div class="c-reel"></div>
+        <div class="c-reel"></div>
+      </div>
+      <div class="music-labels">
+        <span class="music-track">US.EXE OST</span>
+        <span class="music-sub">now playing</span>
+      </div>
+    </div>
+    <div id="page-transition"></div>
+    <div id="music-player">
+      <button id="music-btn">▶</button>
+      <div class="cassette-reels">
+        <div class="c-reel"></div>
+        <div class="c-reel"></div>
+      </div>
+      <div class="music-labels">
+        <span class="music-track">US.EXE OST</span
+        ><span class="music-sub">now playing</span>
+      </div>
+    </div>
+
+    <div id="app-content">
+      <a href="menu.html" class="back-nav" data-nav>◀ MENU</a>
+      <div class="page-shell">
+        <div class="reveal" style="text-align: center">
+          <h1 class="px-title">THE REASONS</h1>
+          <p class="px-small">Pull the lever to generate logic.</p>
+        </div>
+        <div class="slot-wrap reveal rd1">
+          <div class="slot-machine">
+            <div class="slot-screen" id="slot-screen">
+              <div class="slot-placeholder">PULL LEVER ⬇</div>
+            </div>
+            <div class="slot-reels-bar">
+              <div class="reel-win">✨</div>
+              <div class="reel-win">💌</div>
+              <div class="reel-win">🌸</div>
+            </div>
+            <div class="slot-lever-row">
+              <div class="lever-ball" id="lever-ball">PULL</div>
+            </div>
+            <div style="text-align: center; padding: 10px">
+              <span
+                id="slot-count"
+                style="
+                  font-family: var(--f-pixel);
+                  font-size: 10px;
+                  color: var(--accent-cyan);
+                "
+                >0 / 5 UNLOCKED</span
+              >
+            </div>
+          </div>
+          <div id="reason-card" class="reason-card">
+            <span class="reason-tag"></span>
+            <h3 class="reason-heading"></h3>
+            <p class="reason-body"></p>
+          </div>
+        </div>
+        <div id="next-stage-btn" class="level-complete-action">
+          <a href="letter.html" class="px-btn rose" data-nav
+            >PROCEED TO FINAL BOSS ▶</a
+          >
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
